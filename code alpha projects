@@ -1,0 +1,244 @@
+1.HangMan 
+
+
+Source Code:
+
+import random
+
+def choose_word():
+    words = ["python", "hangman", "developer", "programming", "challenge"]
+    return random.choice(words)
+
+def hangman():
+    word = choose_word()
+    guessed_letters = set()
+    attempts = 6
+    display_word = ["_"] * len(word)
+
+    print("Welcome to Hangman!")
+
+    while attempts > 0 and "_" in display_word:
+        print("\nWord:", " ".join(display_word))
+        print(f"Attempts left: {attempts}")
+        
+        guess = input("Enter a letter: ").lower()
+        
+        if guess in guessed_letters:
+            print("You already guessed that letter.")
+        elif guess in word:
+            guessed_letters.add(guess)
+            for i, letter in enumerate(word):
+                if letter == guess:
+                    display_word[i] = guess
+        else:
+            guessed_letters.add(guess)
+            attempts -= 1
+            print("Incorrect guess.")
+
+    if "_" not in display_word:
+        print("\nCongratulations! You guessed the word:", word)
+    else:
+        print("\nGame over! The word was:", word)
+
+hangman()
+
+
+Input/Output:
+
+Welcome to Hangman!
+
+Word: _ _ _ _ _ _
+Attempts left: 6
+Enter a letter: p
+
+Word: p _ _ _ _ _
+Attempts left: 6
+Enter a letter: y
+
+Word: p y _ _ _ _
+Attempts left: 6
+Enter a letter: z
+Incorrect guess.
+
+Word: p y _ _ _ _
+Attempts left: 5
+Enter a letter: t
+
+Word: p y t _ _ _
+Attempts left: 5
+Enter a letter: h
+
+Word: p y t h _ _
+Attempts left: 5
+Enter a letter: o
+
+Word: p y t h o _
+Attempts left: 5
+Enter a letter: n
+
+Congratulations! You guessed the word: python
+
+
+2.Stock Portfolio Tracker
+
+
+Source Code:
+
+import requests
+
+def get_stock_price(symbol):
+    api_url = f"https://financialmodelingprep.com/api/v3/quote/{symbol}?apikey=demo"
+    response = requests.get(api_url).json()
+    if response:
+        return response[0]['price']
+    return None
+
+def portfolio_tracker():
+    portfolio = {}
+
+    while True:
+        print("\n1. Add Stock\n2. Remove Stock\n3. View Portfolio\n4. Exit")
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            symbol = input("Enter stock symbol: ").upper()
+            quantity = int(input("Enter quantity: "))
+            price = get_stock_price(symbol)
+            if price:
+                portfolio[symbol] = {"quantity": quantity, "price": price}
+                print(f"Added {symbol} - {quantity} shares at ${price} each.")
+            else:
+                print("Invalid stock symbol.")
+
+        elif choice == "2":
+            symbol = input("Enter stock symbol to remove: ").upper()
+            if symbol in portfolio:
+                del portfolio[symbol]
+                print(f"Removed {symbol} from portfolio.")
+            else:
+                print("Stock not found.")
+
+        elif choice == "3":
+            print("\nYour Portfolio:")
+            for symbol, data in portfolio.items():
+                print(f"{symbol}: {data['quantity']} shares at ${data['price']} each")
+
+        elif choice == "4":
+            break
+
+portfolio_tracker()
+
+
+Input/Output:
+
+1. Add Stock
+2. Remove Stock
+3. View Portfolio
+4. Exit
+Enter your choice: 1
+Enter stock symbol: AAPL
+Enter quantity: 10
+Added AAPL - 10 shares at $175 each.
+
+1. Add Stock
+2. Remove Stock
+3. View Portfolio
+4. Exit
+Enter your choice: 3
+
+Your Portfolio:
+AAPL: 10 shares at $175 each
+
+Enter your choice: 4
+
+
+
+3.Task Automation With Python Scripts:
+
+
+
+Source Code:
+
+import os
+import shutil
+
+def organize_files(directory):
+    if not os.path.exists(directory):
+        print("Invalid directory!")
+        return
+    
+    file_types = {
+        "Images": [".jpg", ".png", ".jpeg", ".gif"],
+        "Documents": [".pdf", ".docx", ".txt"],
+        "Music": [".mp3", ".wav"],
+        "Videos": [".mp4", ".mov"]
+    }
+    
+    for folder in file_types.keys():
+        os.makedirs(os.path.join(directory, folder), exist_ok=True)
+
+    for file in os.listdir(directory):
+        file_path = os.path.join(directory, file)
+        if os.path.isfile(file_path):
+            for folder, extensions in file_types.items():
+                if file.endswith(tuple(extensions)):
+                    shutil.move(file_path, os.path.join(directory, folder, file))
+                    print(f"Moved {file} to {folder}")
+                    break
+
+directory_path = input("Enter the directory to organize: ")
+organize_files(directory_path)
+
+
+Input/Output:
+
+Enter the directory to organize: /Users/Desktop/Downloads
+
+Moved photo.jpg to Images
+Moved document.pdf to Documents
+Moved song.mp3 to Music
+Moved video.mp4 to Videos
+
+
+4.Basic ChatBot:
+
+
+Source Code:
+
+import random
+
+responses = {
+    "hello": "Hi there! How can I help you?",
+    "how are you": "I'm just a bot, but I'm doing well!",
+    "your name": "I'm a chatbot created in Python.",
+    "bye": "Goodbye! Have a great day!"
+}
+
+def chatbot():
+    print("Chatbot: Hello! Type 'exit' to end the chat.")
+    while True:
+        user_input = input("You: ").lower()
+        if user_input == "exit":
+            print("Chatbot: Goodbye!")
+            break
+        response = responses.get(user_input, "I'm not sure how to respond to that.")
+        print("Chatbot:", response)
+
+chatbot()
+
+
+Input/Output:
+
+Chatbot: Hello! Type 'exit' to end the chat.
+You: hello
+Chatbot: Hi there! How can I help you?
+You: how are you
+Chatbot: I'm just a bot, but I'm doing well!
+You: your name
+Chatbot: I'm a chatbot created in Python.
+You: bye
+Chatbot: Goodbye! Have a great day!
+
+
+
+
